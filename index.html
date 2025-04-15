@@ -90,7 +90,7 @@
     // Add restored locations as markers
     var locations = [
         {
-            coords: [52.3955, 4.9117],
+            coords: [52.393162, 4.910760],
             popup: '<b>Café de Ceuvel</b><br>Korte Papaverweg 4, 1032 KB Amsterdam<br>Eco waterfront café in a reclaimed space',
             tooltip: 'Café de Ceuvel'
         },
@@ -105,7 +105,7 @@
             tooltip: 'Fonda (Stedelijk Museum lobby)'
         },
         {
-            coords: [52.373, 4.891],
+            coords: [52.3730, 4.8811],
             popup: '<b>Saint Jean</b><br>Lindengracht 158h, 1015 KK Amsterdam<br>Next-level vegan pastries',
             tooltip: 'Saint Jean'
         },
@@ -115,7 +115,7 @@
             tooltip: 'Foodhallen'
         },
         {
-            coords: [52.3644, 4.8813],
+            coords: [52.363878, 4.881374],
             popup: '<b>Café Americain</b><br>Leidseplein 28, 1017 PT Amsterdam<br>Iconic Art Deco brasserie',
             tooltip: 'Café Americain'
         },
@@ -128,16 +128,48 @@
             coords: [52.3546, 4.893],
             popup: '<b>Albert Cuypmarkt (Fish Stalls)</b><br>Albert Cuypstraat, 1073 BD Amsterdam<br>Fresh seafood; try the kingfishers',
             tooltip: 'Albert Cuypmarkt (Fish Stalls)'
+        },
+        {
+            coords: [52.368132, 4.895697],
+            popup: '<b>Hotel Tivoli</b><br>Kerkstraat 377, 1017 HW Amsterdam',
+            tooltip: 'Your Hotel',
+            isHotel: true
         }
     ];
 
     locations.forEach(function(loc) {
-        var marker = L.marker(loc.coords).addTo(map);
+        var marker;
+        if (loc.isHotel) {
+            marker = L.marker(loc.coords, {
+                icon: L.AwesomeMarkers.icon({
+                    icon: 'bed',
+                    markerColor: 'green',
+                    prefix: 'fa'
+                })
+            }).addTo(map);
+        } else {
+            marker = L.marker(loc.coords).addTo(map);
+        }
         marker.bindPopup(loc.popup);
         marker.bindTooltip(loc.tooltip, {sticky: true});
+        // Removed marker click-to-copy functionality as requested
     });
 
     addUserLocation(map);
+
+    // Copy coordinates on map click
+    map.on('click', function(e) {
+        var coords = e.latlng.lat.toFixed(6) + ', ' + e.latlng.lng.toFixed(6);
+        navigator.clipboard.writeText(coords).then(function() {
+            L.popup()
+                .setLatLng(e.latlng)
+                .setContent('<span style="color:green;font-weight:bold;">' + coords + ' copied!</span>')
+                .openOn(map);
+            setTimeout(function() {
+                map.closePopup();
+            }, 1200);
+        });
+    });
     </script>
 </body>
 </html>
