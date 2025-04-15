@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+    function addUserLocation(map) {
+        if (navigator.geolocation) {
+            // Show loading message
+            var loadingMsg = L.popup()
+                .setLatLng(map.getCenter())
+                .setContent("Fetching your location...")
+                .openOn(map);
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                // Use a blue awesome marker for user location
+                var userMarker = L.AwesomeMarkers.icon({
+                    icon: 'user',
+                    markerColor: 'blue',
+                    prefix: 'fa'
+                });
+                var marker = L.marker([lat, lon], {icon: userMarker}).addTo(map);
+                marker.bindPopup("<b>You are here</b>").openPopup();
+                map.setView([lat, lon], 14);
+                map.closePopup(loadingMsg);
+            }, function(error) {
+                var errorMsg = "Unable to retrieve your location.";
+                if (error.code === error.PERMISSION_DENIED) {
+                    errorMsg = "Location access denied by user.";
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    errorMsg = "Location information is unavailable.";
+                } else if (error.code === error.TIMEOUT) {
+                    errorMsg = "Location request timed out.";
+                }
+                L.popup()
+                    .setLatLng(map.getCenter())
+                    .setContent(errorMsg)
+                    .openOn(map);
+            });
+        } else {
+            L.popup()
+                .setLatLng(map.getCenter())
+                .setContent("Geolocation is not supported by this browser.")
+                .openOn(map);
+        }
+    }
+    
+    // Initialize map (Amsterdam center)
+    var map = L.map('map').setView([52.3676, 4.9041], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: ' OpenStreetMap'
+    }).addTo(map);
+
+    // Add restored locations as markers
+    var locations = [
+        {
+            coords: [52.3955, 4.9117],
+            popup: '<b>Café de Ceuvel</b><br>Korte Papaverweg 4, 1032 KB Amsterdam<br>Eco waterfront café in a reclaimed space',
+            tooltip: 'Café de Ceuvel'
+        },
+        {
+            coords: [52.3597, 4.8838],
+            popup: "<b>Rijsttafel – Srikandi</b><br>Stadhouderskade 31, 1071 ZD Amsterdam<br>Indonesian tasting feast; go 'max'",
+            tooltip: 'Rijsttafel – Srikandi'
+        },
+        {
+            coords: [52.3584, 4.8799],
+            popup: '<b>Fonda (Stedelijk Museum lobby)</b><br>Museumplein 10, 1071 DJ Amsterdam<br>Great coffee; museum lobby is free to enter',
+            tooltip: 'Fonda (Stedelijk Museum lobby)'
+        },
+        {
+            coords: [52.373, 4.891],
+            popup: '<b>Saint Jean</b><br>Lindengracht 158h, 1015 KK Amsterdam<br>Next-level vegan pastries',
+            tooltip: 'Saint Jean'
+        },
+        {
+            coords: [52.368, 4.8688],
+            popup: '<b>Foodhallen</b><br>Bellamyplein 51, 1053 AT Amsterdam<br>Trendy indoor food market in old train depot',
+            tooltip: 'Foodhallen'
+        },
+        {
+            coords: [52.3644, 4.8813],
+            popup: '<b>Café Americain</b><br>Leidseplein 28, 1017 PT Amsterdam<br>Iconic Art Deco brasserie',
+            tooltip: 'Café Americain'
+        },
+        {
+            coords: [52.3791, 4.9003],
+            popup: '<b>Café 1e Klas</b><br>Stationsplein 15, 1012 AB Amsterdam (Platform 2B, Centraal)<br>Hidden gem in Central Station near Starbucks',
+            tooltip: 'Café 1e Klas'
+        },
+        {
+            coords: [52.3546, 4.893],
+            popup: '<b>Albert Cuypmarkt (Fish Stalls)</b><br>Albert Cuypstraat, 1073 BD Amsterdam<br>Fresh seafood; try the kingfishers',
+            tooltip: 'Albert Cuypmarkt (Fish Stalls)'
+        }
+    ];
+
+    locations.forEach(function(loc) {
+        var marker = L.marker(loc.coords).addTo(map);
+        marker.bindPopup(loc.popup);
+        marker.bindTooltip(loc.tooltip, {sticky: true});
+    });
+
+    addUserLocation(map);
+    </script>
+</body>
+</html>
