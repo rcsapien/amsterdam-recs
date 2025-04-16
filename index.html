@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <!-- Updated Font Awesome to version 5.15.4 for martini glass icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
     
@@ -134,6 +135,36 @@
             popup: '<b>Hotel Tivoli</b><br>Kerkstraat 377, 1017 HW Amsterdam',
             tooltip: 'Your Hotel',
             isHotel: true
+        },
+        {
+            coords: [52.3653, 4.8917],
+            popup: '<b>Door 74</b><br>Reguliersdwarsstraat 74<br>Speakeasy cocktail bar',
+            tooltip: 'Door 74',
+            isCocktailBar: true
+        },
+        {
+            coords: [52.3707, 4.8845],
+            popup: '<b>Pulitzer\'s Bar</b><br>Prinsengracht 323<br>Classic hotel cocktail bar',
+            tooltip: 'Pulitzer\'s Bar',
+            isCocktailBar: true
+        },
+        {
+            coords: [52.3751, 4.8895],
+            popup: '<b>Tales & Spirits</b><br>Lijnbaanssteeg 5-7<br>Innovative cocktails & food',
+            tooltip: 'Tales & Spirits',
+            isCocktailBar: true
+        },
+        {
+            coords: [52.3666, 4.8891],
+            popup: '<b>Flying Dutchmen Cocktails</b><br>Singel 460<br>Focus on classic cocktails',
+            tooltip: 'Flying Dutchmen Cocktails',
+            isCocktailBar: true
+        },
+        {
+            coords: [52.3706, 4.8982],
+            popup: '<b>Rosalia\'s Menagerie</b><br>Kloveniersburgwal 20<br>Hidden gem with unique theme',
+            tooltip: 'Rosalia\'s Menagerie',
+            isCocktailBar: true
         }
     ];
 
@@ -144,6 +175,14 @@
                 icon: L.AwesomeMarkers.icon({
                     icon: 'bed',
                     markerColor: 'green',
+                    prefix: 'fa'
+                })
+            }).addTo(map);
+        } else if (loc.isCocktailBar) {
+            marker = L.marker(loc.coords, {
+                icon: L.AwesomeMarkers.icon({
+                    icon: 'glass-martini',
+                    markerColor: 'purple',
                     prefix: 'fa'
                 })
             }).addTo(map);
